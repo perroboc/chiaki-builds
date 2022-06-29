@@ -1,0 +1,135 @@
+name: Build Chiaki on GitHub Actions
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - "Release*"
+jobs:
+  build-win_x64: # only win_x64 so far :)
+    name: Build Chiaki Windows x64 binary
+    runs-on: windows-2022
+
+    defaults:
+      run:
+        working-directory: chiaki
+
+    steps:
+
+      - name: Clean Workspace Action
+        uses: yumis-coconudge/clean-workspace-action@v1.0.5
+
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          submodules: "recursive"
+
+      - name: Setup MSYS2
+        uses: msys2/setup-msys2@v2
+        with:
+          install: >-
+            base-devel
+          pacboy: >-
+            toolchain:p
+            cmake:p
+            SDL2:p
+            ffmpeg:p
+            opus:p
+            qt5:p
+            yasm:p
+            protobuf:p
+            glfw:p
+
+      - name: Put MSYS2_MinGW64 on PATH
+        shell: pwsh
+        # there is not yet an environment variable for this path from msys2/setup-msys2
+        # echo "${{ runner.temp }}\msys64\mingw64\qt5-static\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+        run: |
+          echo "${{ runner.temp }}\msys64\mingw64\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.x"
+          architecture: "x64"
+
+      - name: Install pip dependencies
+        shell: pwsh
+        run: |
+          python -m pip install --upgrade setuptools
+          python -m pip install --user --upgrade scons protobuf grpcio-tools pyinstaller
+          python -c 'import google.protobuf; print(google.protobuf.__file__)'
+
+      - name: Build nanopb
+        shell: pwsh
+        run: |
+          pwd
+          cd third-party/nanopb
+          ./tools/make_windows_package.sh
+
+      - name: Configure
+        shell: pwsh
+        run: |
+          cmake `
+          --no-warn-unused-cli `
+          -S . `
+          -B build `
+          -G Ninja `
+          -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE `
+          -DCMAKE_BUILD_TYPE:STRING=Release `
+          -DPYTHON_EXECUTABLE=${{ env.pythonLocation }}\python.exe
+
+      - name: Build
+        shell: pwsh
+        run: |
+          cmake --build build --config Release --target chiaki --
+
+      - name: Copy files to deployment folder
+        shell: pwsh
+        run: |
+          mkdir Chiaki
+          cp build\gui\chiaki.exe Chiaki
+          cp ${{ runner.temp }}\msys64\mingw64\bin\SDL2.dll Chiaki
+          cp ${{ runner.temp }}\msys64\mingw64\bin\libssl-1_1-x64.dll Chiaki
+          cp ${{ runner.temp }}\msys64\mingw64\bin\libcrypto-1_1-x64.dll Chiaki
+
+      - name: WindeployQt
+        shell: pwsh
+        run: |
+          echo $PATH
+          windeployqt.exe --no-translations Chiaki/chiaki.exe
+
+      - name: Package
+        shell: pwsh
+        run: |
+          $CHIAKI_VERSION_MAJOR = (Select-String -Path .\CMakeLists.txt -Pattern 'set\(CHIAKI_VERSION_MAJOR ([0-9]+)\)') | %{$_.Matches.Groups[1].value}
+          $CHIAKI_VERSION_MINOR = (Select-String -Path .\CMakeLists.txt -Pattern 'set\(CHIAKI_VERSION_MINOR ([0-9]+)\)') | %{$_.Matches.Groups[1].value}
+          $CHIAKI_VERSION_PATCH = (Select-String -Path .\CMakeLists.txt -Pattern 'set\(CHIAKI_VERSION_PATCH ([0-9]+)\)') | %{$_.Matches.Groups[1].value}
+          $RELEASE_PACKAGE_FILE = "Chiaki-win_x64-$CHIAKI_VERSION_MAJOR.$CHIAKI_VERSION_MINOR.$CHIAKI_VERSION_PATCH.zip"
+          Compress-Archive Chiaki $RELEASE_PACKAGE_FILE
+          $release_filepath = Get-ChildItem $RELEASE_PACKAGE_FILE | %{$_[0].FullName}
+          echo "RELEASE_PACKAGE_PATH=$release_filepath" | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf8 -Append
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: Chiaki-win_x64-Release
+          path: ${{ env.RELEASE_PACKAGE_PATH }}
+          if-no-files-found: error
+          retention-days: 1
+
+  create-release:
+    name: Create release
+    runs-on: windows-2022
+    needs: build-win_x64
+    steps:
+      - name: Download win_x64 artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: Chiaki-win_x64-Release
+
+      - name: Create Release
+        uses: ncipollo/release-action@v1.10.0
+        with:
+          artifacts: "*.zip"
+          body: "Automatic release built with Github actions."
