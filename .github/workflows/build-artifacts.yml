@@ -95,6 +95,10 @@ jobs:
           cp ${{ runner.temp }}\msys64\mingw64\bin\libmfx-1.dll Chiaki
           cp ${{ runner.temp }}\msys64\mingw64\bin\libssp-0.dll Chiaki
           cp ${{ runner.temp }}\msys64\mingw64\bin\libvulkan-1.dll Chiaki
+          cp ${{ runner.temp }}\msys64\mingw64\bin\libglib-2.0-0.dll Chiaki
+          cp ${{ runner.temp }}\msys64\mingw64\bin\libgobject-2.0-0.dll Chiaki
+          cp ${{ runner.temp }}\msys64\mingw64\bin\libgsm.dll Chiaki
+          cp ${{ runner.temp }}\msys64\mingw64\bin\libiconv-2.dll Chiaki
           cp ${{ runner.temp }}\msys64\mingw64\bin\libaom.dll Chiaki
           cp ${{ runner.temp }}\msys64\mingw64\bin\libcairo-2.dll Chiaki
           cp ${{ runner.temp }}\msys64\mingw64\bin\libdav1d.dll Chiaki
