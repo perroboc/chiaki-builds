@@ -35,7 +35,7 @@ jobs:
             SDL2:p
             ffmpeg:p
             opus:p
-            qt6:p
+            qt5:p
             yasm:p
             protobuf:p
             glfw:p
