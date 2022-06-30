@@ -167,6 +167,7 @@ jobs:
           cp ${{ runner.temp }}\msys64\mingw64\bin\swresample-3.dll Chiaki
           cp ${{ runner.temp }}\msys64\mingw64\bin\xvidcore.dll Chiaki
           cp ${{ runner.temp }}\msys64\mingw64\bin\zlib1.dll Chiaki
+          cp ${{ runner.temp }}\msys64\mingw64\bin\libdatrie-1.dll Chiaki
 
       - name: WindeployQt
         shell: pwsh
