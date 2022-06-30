@@ -75,20 +75,40 @@ jobs:
           -S . `
           -B build `
           -G Ninja `
+          -DCMAKE_C_COMPILER=cl `
+	        -DCMAKE_C_FLAGS="-we4013" `
           -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE `
-          -DCMAKE_BUILD_TYPE:STRING=Release `
+          -DCMAKE_BUILD_TYPE=RelWithDebInfo `
+          -DCHIAKI_ENABLE_CLI=OFF `
+          -DCHIAKI_GUI_ENABLE_SDL_GAMECONTROLLER=ON `
           -DPYTHON_EXECUTABLE=${{ env.pythonLocation }}\python.exe
 
       - name: Build
-        shell: pwsh
+        shell: pwsh # cmake --build build --config Release --target chiaki -- 
         run: |
-          cmake --build build --config Release --target chiaki --
-
+          ninja -C build
+          
       - name: Copy files to deployment folder
         shell: pwsh
         run: |
           mkdir Chiaki
           cp build\gui\chiaki.exe Chiaki
+          cp ${{ runner.temp }}\msys64\mingw64\bin\libbrotlidec.dll Chiaki
+          cp ${{ runner.temp }}\msys64\mingw64\bin\libbz2-1.dll Chiaki
+          cp ${{ runner.temp }}\msys64\mingw64\bin\libcairo-gobject-2.dll Chiaki
+          cp ${{ runner.temp }}\msys64\mingw64\bin\libdouble-conversion.dll Chiaki
+          cp ${{ runner.temp }}\msys64\mingw64\bin\libexpat-1.dll Chiaki
+          cp ${{ runner.temp }}\msys64\mingw64\bin\libffi-7.dll Chiaki
+          cp ${{ runner.temp }}\msys64\mingw64\bin\libgdk_pixbuf-2.0-0.dll Chiaki
+          cp ${{ runner.temp }}\msys64\mingw64\bin\libgio-2.0-0.dll Chiaki
+          cp ${{ runner.temp }}\msys64\mingw64\bin\libgraphite2.dll Chiaki
+          cp ${{ runner.temp }}\msys64\mingw64\bin\libicudt69.dll Chiaki
+          cp ${{ runner.temp }}\msys64\mingw64\bin\libogg-0.dll Chiaki
+          cp ${{ runner.temp }}\msys64\mingw64\bin\libpango-1.0-0.dll Chiaki
+          cp ${{ runner.temp }}\msys64\mingw64\bin\libpangocairo-1.0-0.dll Chiaki
+          cp ${{ runner.temp }}\msys64\mingw64\bin\libpcre-1.dll Chiaki
+          cp ${{ runner.temp }}\msys64\mingw64\bin\libsoxr.dll Chiaki
+          cp ${{ runner.temp }}\msys64\mingw64\bin\libxml2-2.dll Chiaki
           cp ${{ runner.temp }}\msys64\mingw64\bin\avcodec-58.dll Chiaki
           cp ${{ runner.temp }}\msys64\mingw64\bin\avutil-56.dll Chiaki
           cp ${{ runner.temp }}\msys64\mingw64\bin\libaom.dll Chiaki
@@ -140,7 +160,6 @@ jobs:
           cp ${{ runner.temp }}\msys64\mingw64\bin\swresample-3.dll Chiaki
           cp ${{ runner.temp }}\msys64\mingw64\bin\xvidcore.dll Chiaki
           cp ${{ runner.temp }}\msys64\mingw64\bin\zlib1.dll Chiaki
-
 
       - name: WindeployQt
         shell: pwsh
