@@ -1,5 +1,7 @@
 # Chiaki builds
 
+[![Build Chiaki on GitHub Actions](https://github.com/alvaromunoz/chiaki-builds/actions/workflows/build-artifacts.yml/badge.svg)](https://github.com/alvaromunoz/chiaki-builds/actions/workflows/build-artifacts.yml)
+
 This is just a repo with [Chiaki](https://git.sr.ht/~thestr4ng3r/chiaki) as a
 Git submodule, automating the build scripts on GitHub Actions Workflows.
 
