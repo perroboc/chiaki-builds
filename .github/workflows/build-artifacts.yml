@@ -76,7 +76,7 @@ jobs:
           -B build `
           -G Ninja `
           -DCMAKE_C_COMPILER=cl `
-	        -DCMAKE_C_FLAGS="-we4013" `
+          -DCMAKE_C_FLAGS="-we4013" `
           -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE `
           -DCMAKE_BUILD_TYPE=RelWithDebInfo `
           -DCHIAKI_ENABLE_CLI=OFF `
