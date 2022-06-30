@@ -90,6 +90,10 @@ jobs:
           mkdir Chiaki
           cp build\gui\chiaki.exe Chiaki
           cp ${{ runner.temp }}\msys64\mingw64\bin\SDL2.dll Chiaki
+          cp ${{ runner.temp }}\msys64\mingw64\bin\avutil-56.dll Chiaki
+          cp ${{ runner.temp }}\msys64\mingw64\bin\avcodec-58.cll Chiaki
+          cp ${{ runner.temp }}\msys64\mingw64\bin\libgcc_s_seh-1.dll Chiaki
+          cp ${{ runner.temp }}\msys64\mingw64\bin\libopus-0.dll Chiaki
           cp ${{ runner.temp }}\msys64\mingw64\bin\libssl-1_1-x64.dll Chiaki
           cp ${{ runner.temp }}\msys64\mingw64\bin\libcrypto-1_1-x64.dll Chiaki
 
