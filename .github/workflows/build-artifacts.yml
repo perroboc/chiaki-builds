@@ -78,7 +78,7 @@ jobs:
           -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE `
           -DCMAKE_BUILD_TYPE=Release `
           -DCMAKE_CXX_STANDARD_LIBRARIES="-static-libgcc -static-libstdc++ $CMAKE_CXX_STANDARD_LIBRARIES" `
-          -DCMAKE_EXE_LINKER_FLAGS="$CMAKE_EXE_LINKER_FLAGS -Wl,-Bstatic,--whole-archive -lwinpthread -Wl,--no-whole-archive"
+          -DCMAKE_EXE_LINKER_FLAGS="$CMAKE_EXE_LINKER_FLAGS -Wl,-Bstatic,--whole-archive -lwinpthread -Wl,--no-whole-archive" `
           -DCHIAKI_ENABLE_CLI=OFF `
           -DCHIAKI_GUI_ENABLE_SDL_GAMECONTROLLER=ON `
           -DPYTHON_EXECUTABLE=${{ env.pythonLocation }}\python.exe
