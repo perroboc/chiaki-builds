@@ -40,7 +40,7 @@ jobs:
       
       - name: Setup YASM
         run: |
-          New-Item -Path "${{ github.workspace }}\yasm"
+          New-Item -Path "${{ github.workspace }}\yasm" -Type Directory
           Set-Location "${{ github.workspace }}\yasm"
           Invoke-WebRequest http://www.tortall.net/projects/yasm/releases/yasm-1.3.0-win64.exe
           Rename-Item yasm-1.3.0-win64.exe yasm.exe
