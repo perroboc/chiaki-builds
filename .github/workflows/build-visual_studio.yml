@@ -49,7 +49,7 @@ jobs:
 
 
       - name: Build FFMPEG
-        working-directory:
+        working-directory: .
         shell: bash
         run: |
           cd ${{ github.workspace }}
