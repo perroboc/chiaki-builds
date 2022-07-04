@@ -26,6 +26,7 @@ jobs:
       - name: Setup MSVC
         uses: TheMrMilchmann/setup-msvc-dev@v2
         with:
+          arch: "x86_64"
           toolset: "16.11"
 
       # - name: Get latest CMake and ninja
