@@ -22,7 +22,7 @@ jobs:
         uses: ilammy/msvc-dev-cmd@v1
         with:
           arch: "x86_64"
-          toolset: "16.XX"
+          toolset: "14.29"
 
       - name: Checkout code
         uses: actions/checkout@v2
