@@ -70,7 +70,6 @@ jobs:
           -DPYTHON_EXECUTABLE=${{ env.pythonLocation }}\python.exe
       
       - name: Build
-        shell: pwsh # 
         run: |
           cmake --build build --config Release --target chiaki --
           ls -R
