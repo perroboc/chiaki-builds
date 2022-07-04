@@ -35,7 +35,7 @@ jobs:
       - name: Setup MSVC
         uses: ilammy/msvc-dev-cmd@v1
         with:
-          arch: "x86_64"
+          arch: "x86_amd64"
           toolset: "14.29"
       
       - name: Setup YASM
