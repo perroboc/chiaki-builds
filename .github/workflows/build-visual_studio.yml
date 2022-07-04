@@ -38,8 +38,16 @@ jobs:
           arch: "x86_64"
           toolset: "14.29"
       
+      - name: Create SDL folders
+        run: |
+          mkdir "${{ github.workspace }}/SDL/headers"
+          mkdir "${{ github.workspace }}/SDL/bin"
+
       - name: Download SDL2
         uses: albin-johansson/download-sdl2@v2
+        with:
+          sources_destination: "${{ github.workspace }}/SDL/headers"
+          binaries_destination: "${{ github.workspace }}/SDL/bin"
 
       - name: Setup Qt
         uses: jurplel/install-qt-action@v2
