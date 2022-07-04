@@ -18,17 +18,17 @@ jobs:
       - name: Clean Workspace Action
         uses: yumis-coconudge/clean-workspace-action@v1.0.5
 
+      - name: Setup MSVC
+        uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: "x86_64"
+          toolset: "16.XX"
+
       - name: Checkout code
         uses: actions/checkout@v2
         with:
           submodules: "recursive"
       
-      - name: Setup MSVC
-        uses: ilammy/msvc-dev-cmd@v1
-        with:
-          arch: "x86_64"
-          toolset: "16.11"
-
       # - name: Get latest CMake and ninja
       #   uses: lukka/get-cmake@latest
 
