@@ -42,7 +42,6 @@ jobs:
           cd third-party/nanopb
           ./tools/make_windows_package.sh
           echo "${{ github.workspace }}\third-party\nanopb\generator" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
-          echo "${{ github.workspace }}\third-party\nanopb\generator" | Out-File -FilePath $env:Path -Encoding utf8 -Append
 
       - name: Setup MSVC
         uses: ilammy/msvc-dev-cmd@v1
