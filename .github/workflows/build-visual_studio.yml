@@ -24,7 +24,7 @@ jobs:
           submodules: "recursive"
       
       - name: Setup MSVC
-        uses: TheMrMilchmann/setup-msvc-dev@v2
+        uses: ilammy/msvc-dev-cmd@v1
         with:
           arch: "x86_64"
           toolset: "16.11"
