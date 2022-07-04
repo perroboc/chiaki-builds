@@ -26,7 +26,6 @@ jobs:
       - name: Setup MSVC
         uses: ilammy/msvc-dev-cmd@v1
         with:
-          arch: "x86_64"
           toolset: "16.11"
 
       # - name: Get latest CMake and ninja
