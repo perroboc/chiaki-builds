@@ -45,9 +45,9 @@ jobs:
 
       - name: Setup MSVC
         uses: ilammy/msvc-dev-cmd@v1
-          with:
-            arch: x64
-            toolset: 16.XX
+        with:
+          arch: x64
+          toolset: 16.XX
 
       - name: Build nanopb
         run: |
