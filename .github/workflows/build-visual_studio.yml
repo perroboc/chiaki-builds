@@ -1,0 +1,75 @@
+name: Build Chiaki with Visual Studio
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build-win_x64: # only win_x64 so far :)
+    name: Build Chiaki Windows x64 binary
+    runs-on: windows-2022
+
+    defaults:
+      run:
+        working-directory: chiaki
+        shell: powershell
+
+    steps:
+
+      - name: Clean Workspace Action
+        uses: yumis-coconudge/clean-workspace-action@v1.0.5
+
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          submodules: "recursive"
+
+      # - name: Get latest CMake and ninja
+      #   uses: lukka/get-cmake@latest
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.x"
+          architecture: "x64"
+
+      - name: Install pip dependencies
+        run: |
+          python3 -m pip install --upgrade setuptools
+          python3 -m pip install --user --upgrade scons protobuf grpcio-tools pyinstaller
+          python3 -c 'import google.protobuf; print(google.protobuf.__file__)'
+
+      - name: Setup Qt
+        uses: jurplel/install-qt-action@v2
+        with:
+          arch: win64_msvc2019_64
+
+      - name: Setup MSVC
+        uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: x64
+          toolset: 16.XX
+
+      - name: Build nanopb
+        run: |
+          cd third-party/nanopb
+          ./tools/make_windows_package.sh
+
+      - name: Configure
+        run: |
+          cmake `
+          --no-warn-unused-cli `
+          -S . `
+          -B build `
+          -G "Visual Studio 17 2022" -A x64 `
+          -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE `
+          -DCMAKE_BUILD_TYPE=Release `
+          -DCMAKE_CXX_STANDARD_LIBRARIES="-static-libgcc -static-libstdc++ $CMAKE_CXX_STANDARD_LIBRARIES" `
+          -DCMAKE_EXE_LINKER_FLAGS="$CMAKE_EXE_LINKER_FLAGS -lwinpthread -lavformat -lavcodec -lavutil" `
+          -DCHIAKI_ENABLE_CLI=OFF `
+          -DCHIAKI_GUI_ENABLE_SDL_GAMECONTROLLER=ON `
+          -DPYTHON_EXECUTABLE=${{ env.pythonLocation }}\python.exe
+      
+      - name: Build
+        run: |
+          cmake --build build --config Release --target chiaki --
+          ls -R
