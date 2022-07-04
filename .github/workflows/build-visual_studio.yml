@@ -38,8 +38,8 @@ jobs:
           arch: "x86_64"
           toolset: "14.29"
       
-      # - name: Get latest CMake and ninja
-      #   uses: lukka/get-cmake@latest
+      - name: Download SDL2
+        uses: albin-johansson/download-sdl2@v2
 
       - name: Setup Qt
         uses: jurplel/install-qt-action@v2
