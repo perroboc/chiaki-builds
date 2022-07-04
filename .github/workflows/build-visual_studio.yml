@@ -55,7 +55,6 @@ jobs:
         run: |
           cd third-party/nanopb
           ./tools/make_windows_package.sh
-          cd dist
           ls -R
 
       - name: Configure
