@@ -51,7 +51,7 @@ jobs:
           cd ${{ github.workspace }}
           git clone https://git.ffmpeg.org/ffmpeg.git --depth 1 -b 'n5.0.1' #was 4.3.1
           cd ffmpeg
-          ./configure --target-os=win64 --arch=x86_64 --toolchain=msvc --disable-all --enable-avcodec --enable-decoder=h264 --enable-decoder=hevc --enable-hwaccel=h264_vaapi --enable-hwaccel=hevc_vaapi --prefix="${{ github.workspace }}/ffmpeg/ffmpeg-prefix" "$@"
+          ./configure --target-os=win64 --arch=x86_64 --toolchain=msvc --disable-all --enable-avcodec --enable-decoder=h264 --enable-decoder=hevc --enable-hwaccel=h264_vaapi --enable-hwaccel=hevc_vaapi --prefix="${{ github.workspace }}/ffmpeg/ffmpeg-prefix"
           make -j4
           make install
 
