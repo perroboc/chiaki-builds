@@ -49,7 +49,7 @@ jobs:
       - name: Build FFMPEG
         run: |
           cd ${{ github.workspace }}
-          git clone https://git.ffmpeg.org/ffmpeg.git --depth 1 -b 'n5.0.1' #was 4.3.1
+          git clone https://git.ffmpeg.org/ffmpeg.git --branch 'n5.0.1' --single-branch #was 4.3.1
           cd ffmpeg
           #ls -R
           ./configure --target-os=win64 --arch=x86_64 --toolchain=msvc
