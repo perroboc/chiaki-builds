@@ -47,13 +47,15 @@ jobs:
           Write-Output "${{ github.workspace }}\yasm" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
 
       - name: Build FFMPEG
+        shell: bash
         run: |
           cd ${{ github.workspace }}
-          git clone https://git.ffmpeg.org/ffmpeg.git --branch 'n5.0.1' --single-branch #was 4.3.1
+          git clone https://git.ffmpeg.org/ffmpeg.git --branch "n5.0.1" --single-branch #was 4.3.1
           cd ffmpeg
           #ls -R
-          ./configure --target-os=win64 --arch=x86_64 --toolchain=msvc
-          #./configure --target-os=win64 --arch=x86_64 --toolchain=msvc --disable-all --enable-avcodec --enable-decoder=h264 --enable-decoder=hevc --enable-hwaccel=h264_vaapi --enable-hwaccel=hevc_vaapi --prefix="${{ github.workspace }}\ffmpeg\ffmpeg-prefix"
+          #$env:SRC_PATH = "${{ github.workspace }}/ffmpeg"
+          #./configure --target-os=win64 --arch=x86_64 --toolchain=msvc
+          ./configure --target-os=win64 --arch=x86_64 --toolchain=msvc --disable-all --enable-avcodec --enable-decoder=h264 --enable-decoder=hevc --enable-hwaccel=h264_vaapi --enable-hwaccel=hevc_vaapi --prefix="${{ github.workspace }}/ffmpeg/ffmpeg-prefix"
           make -j4
           make install
 
