@@ -17,6 +17,11 @@ jobs:
       - name: Clean Workspace Action
         uses: yumis-coconudge/clean-workspace-action@v1.0.5
 
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          submodules: "recursive"
+
       - name: Setup NASM
         run: |
           Invoke-WebRequest -UseBasicParsing -Uri "https://www.nasm.us/pub/nasm/releasebuilds/2.15.05/win64/nasm-2.15.05-win64.zip" -OutFile ".\nasm-2.15.05-win64.zip"
@@ -24,11 +29,16 @@ jobs:
           Rename-Item "nasm-2.15.05" "nasm"
           Write-Output "${{ github.workspace }}\nasm" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
 
-      - name: Checkout code
-        uses: actions/checkout@v2
-        with:
-          submodules: "recursive"
+      - name: Setup ffmpeg
+        run: |
+          Invoke-WebRequest -UseBasicParsing -Uri "https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-n5.0-latest-win64-gpl-shared-5.0.zip" -OutFile ".\ffmpeg-n5.0-latest-win64-gpl-shared-5.0.zip"
+          Expand-Archive -LiteralPath "ffmpeg-n5.0-latest-win64-gpl-shared-5.0.zip" -DestinationPath "."
+          Rename-Item "ffmpeg-n5.0-latest-win64-gpl-shared-5.0" "ffmpeg"
+          echo "SDL_ROOT=${{ github.workspace }}\ffmpeg" | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf8 -Append # export SDL_ROOT="$APPVEYOR_BUILD_FOLDER/SDL2-2.0.10" || exit 1
 
+      - name: Setup protoc
+        uses: arduino/setup-protoc@v1.1.2
+        
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
@@ -41,22 +51,19 @@ jobs:
           python3 -m pip install --user --upgrade scons protobuf grpcio-tools pyinstaller
           python3 -c 'import google.protobuf; print(google.protobuf.__file__)'
 
-      - name: Setup protoc
-        uses: arduino/setup-protoc@v1.1.2
-
       - name: Setup MSVC
         uses: ilammy/msvc-dev-cmd@v1
         with:
           arch: "x86_amd64"
           toolset: "14.29"
 
-      - name: Build FFMPEG
-        run: |
-          git clone https://git.ffmpeg.org/ffmpeg.git --branch "n5.0.1" --single-branch #was 4.3.1
-          cd ffmpeg
-          ./configure --disable-all --enable-avcodec --enable-decoder=h264 --enable-decoder=hevc --enable-hwaccel=h264_vaapi --enable-hwaccel=hevc_vaapi --prefix='${{ github.workspace }}\ffmpeg\ffmpeg-prefix' --target-os=win64 --arch=x86_64 --toolchain=msvc 
-          make -j4
-          make install
+      # - name: Build FFMPEG
+      #   run: |
+      #     git clone https://git.ffmpeg.org/ffmpeg.git --branch "n5.0.1" --single-branch #was 4.3.1
+      #     cd ffmpeg
+      #     ./configure --disable-all --enable-avcodec --enable-decoder=h264 --enable-decoder=hevc --enable-hwaccel=h264_vaapi --enable-hwaccel=hevc_vaapi --prefix='${{ github.workspace }}\ffmpeg\ffmpeg-prefix' --target-os=win64 --arch=x86_64 --toolchain=msvc 
+      #     make -j4
+      #     make install
 
       # - name: Setup MSYS2
       #   uses: msys2/setup-msys2@v2
