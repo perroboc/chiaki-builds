@@ -36,7 +36,15 @@ jobs:
           Invoke-WebRequest -UseBasicParsing -Uri "https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-n5.0-latest-win64-gpl-shared-5.0.zip" -OutFile ".\ffmpeg-n5.0-latest-win64-gpl-shared-5.0.zip"
           Expand-Archive -LiteralPath "ffmpeg-n5.0-latest-win64-gpl-shared-5.0.zip" -DestinationPath "."
           Rename-Item "ffmpeg-n5.0-latest-win64-gpl-shared-5.0" "ffmpeg"
-          Write-Output "${{ github.workspace }}\ffmpeg" | Out-File -FilePath $Env:GITHUB_PATH -Encoding utf8 -Append # export SDL_ROOT="$APPVEYOR_BUILD_FOLDER/SDL2-2.0.10" || exit 1
+          Write-Output "${{ github.workspace }}\ffmpeg" | Out-File -FilePath $Env:GITHUB_PATH -Encoding utf8 -Append
+
+      - name: Setup nanopb
+        run: |
+          $ProgressPreference = 'SilentlyContinue'
+          Invoke-WebRequest -UseBasicParsing -Uri "https://jpa.kapsi.fi/nanopb/download/nanopb-0.4.6-windows-x86.zip" -OutFile ".\nanopb-0.4.6-windows-x86.zip"
+          Expand-Archive -LiteralPath "nanopb-0.4.6-windows-x86.zip" -DestinationPath "."
+          Rename-Item "nanopb-0.4.6-windows-x86" "nanopb"
+          Write-Output "${{ github.workspace }}\nanopb" | Out-File -FilePath $Env:GITHUB_PATH -Encoding utf8 -Append
 
       - name: Setup OpenSSL
         run: |
@@ -44,7 +52,7 @@ jobs:
           Invoke-WebRequest -UseBasicParsing -Uri "https://mirror.firedaemon.com/OpenSSL/openssl-1.1.1p.zip" -OutFile ".\openssl-1.1.1p.zip"
           Expand-Archive -LiteralPath "openssl-1.1.1p.zip" -DestinationPath "."
           Rename-Item "openssl-1.1" "openssl"
-          Write-Output "${{ github.workspace }}\openssl" | Out-File -FilePath $Env:GITHUB_PATH -Encoding utf8 -Append # export SDL_ROOT="$APPVEYOR_BUILD_FOLDER/SDL2-2.0.10" || exit 1
+          Write-Output "${{ github.workspace }}\openssl" | Out-File -FilePath $Env:GITHUB_PATH -Encoding utf8 -Append
 
 
       - name: Setup SDL2
@@ -58,9 +66,6 @@ jobs:
           Add-Content -Path "${{ github.workspace }}\SDL2\SDL2Config.cmake" -Value 'set(SDL2_LIBRARIES \"$SDL_ROOT/lib/x64/SDL2.lib\")'
           Add-Content -Path "${{ github.workspace }}\SDL2\SDL2Config.cmake" -Value 'set(SDL2_LIBDIR \"$SDL_ROOT/lib/x64\")'
 
-      - name: Setup protoc
-        uses: arduino/setup-protoc@v1.1.2
-
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
@@ -73,12 +78,12 @@ jobs:
           python3 -m pip install --user --upgrade scons protobuf grpcio-tools pyinstaller
           python3 -c 'import google.protobuf; print(google.protobuf.__file__)'
       
-      - name: Build nanopb
-        working-directory: chiaki
-        shell: bash
-        run: |
-          cd third-party/nanopb
-          ./tools/make_windows_package.sh
+      # - name: Build nanopb
+      #   working-directory: chiaki
+      #   shell: bash
+      #   run: |
+      #     cd third-party/nanopb
+      #     ./tools/make_windows_package.sh
 
       - name: Setup Qt
         uses: jurplel/install-qt-action@v2
