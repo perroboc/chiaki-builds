@@ -130,7 +130,7 @@ jobs:
           -B build `
           -G "Visual Studio 17 2022" -A x64 `
           -DCMAKE_C_COMPILER=cl `
-	        -DCMAKE_C_FLAGS="-we4013" `
+          -DCMAKE_C_FLAGS="-we4013" `
           -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE `
           -DCMAKE_BUILD_TYPE=Release `
           -DCMAKE_PREFIX_PATH="${{ github.workspace }}\ffmpeg;${{ github.workspace }}\opus-prefix;${{ github.workspace }}\openssl\x64;$Qt5_Dir;$SDL_ROOT" \
