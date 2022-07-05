@@ -97,7 +97,7 @@ jobs:
         uses: ilammy/msvc-dev-cmd@v1
         with:
           arch: "x86_64"
-          toolset: "15.XX"
+          toolset: "15"
 
       # - name: Build FFMPEG
       #   run: |
