@@ -89,6 +89,7 @@ jobs:
           -DCMAKE_BUILD_TYPE=Release `
           -DCMAKE_INSTALL_PREFIX="${{ github.workspace }}\opus-prefix"
           cmake --build build
+          ls -R
           cmake --install build
 
       - name: Setup SDL2
