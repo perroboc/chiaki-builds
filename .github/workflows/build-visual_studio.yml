@@ -17,20 +17,6 @@ jobs:
       - name: Clean Workspace Action
         uses: yumis-coconudge/clean-workspace-action@v1.0.5
 
-      - name: Checkout code
-        uses: actions/checkout@v2
-        with:
-          submodules: "recursive"
-
-      - name: Setup Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: "3.x"
-          architecture: "x64"
-
-      - name: Setup protoc
-        uses: arduino/setup-protoc@v1.1.2
-
       - name: Setup YASM
         run: |
           mkdir yasm
@@ -44,6 +30,20 @@ jobs:
         run: |
           echo $PATH
           yasm --version
+
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          submodules: "recursive"
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.x"
+          architecture: "x64"
+
+      - name: Setup protoc
+        uses: arduino/setup-protoc@v1.1.2
 
       - name: Setup MSVC
         uses: ilammy/msvc-dev-cmd@v1
