@@ -144,6 +144,8 @@ jobs:
           -DCHIAKI_GUI_ENABLE_SDL_GAMECONTROLLER=ON `
           -Dnanopb_DIR=${{ env.pythonLocation }}\nanopb `
           -DPYTHON_EXECUTABLE=${{ env.pythonLocation }}\python.exe `
+          -DCMAKE_CXX_STANDARD_LIBRARIES="-static-libgcc -static-libstdc++ $CMAKE_CXX_STANDARD_LIBRARIES" `
+          -DCMAKE_EXE_LINKER_FLAGS="$CMAKE_EXE_LINKER_FLAGS -lSDL2 -lwinpthread -lavformat -lavcodec -lavutil" `
           -DCMAKE_PREFIX_PATH="${{ github.workspace }}\ffmpeg;${{ github.workspace }}\opus-prefix;${{ github.workspace }}\openssl\x64;${{ github.workspace }}\SDL2;${{ env.Qt5_Dir }}"
 
       - name: Build
