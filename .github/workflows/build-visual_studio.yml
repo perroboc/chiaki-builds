@@ -17,16 +17,12 @@ jobs:
       - name: Clean Workspace Action
         uses: yumis-coconudge/clean-workspace-action@v1.0.5
 
-      - name: Setup NASM
-        run: |
-          Invoke-WebRequest -UseBasicParsing -Uri "https://www.nasm.us/pub/nasm/releasebuilds/2.15.05/win64/nasm-2.15.05-win64.zip" -OutFile ".\nasm-2.15.05-win64.zip"
-          Expand-Archive -LiteralPath "nasm-2.15.05-win64.zip" -DestinationPath "."
-          Rename-Item "nasm-2.15.05" "nasm"
-          Write-Output "${{ github.workspace }}\nasm" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
-
-      - name: Test NASM
-        run: |
-          nasm --version
+      # - name: Setup NASM
+      #   run: |
+      #     Invoke-WebRequest -UseBasicParsing -Uri "https://www.nasm.us/pub/nasm/releasebuilds/2.15.05/win64/nasm-2.15.05-win64.zip" -OutFile ".\nasm-2.15.05-win64.zip"
+      #     Expand-Archive -LiteralPath "nasm-2.15.05-win64.zip" -DestinationPath "."
+      #     Rename-Item "nasm-2.15.05" "nasm"
+      #     Write-Output "${{ github.workspace }}\nasm" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
 
       - name: Checkout code
         uses: actions/checkout@v2
@@ -49,13 +45,14 @@ jobs:
           toolset: "14.29"
 
       - name: Build FFMPEG
+        shell: msys2 {0}
         run: |
           git clone https://git.ffmpeg.org/ffmpeg.git --branch "n5.0.1" --single-branch #was 4.3.1
           cd ffmpeg
           #ls -R
           #$env:SRC_PATH = "${{ github.workspace }}/ffmpeg"
           #./configure --target-os=win64 --arch=x86_64 --toolchain=msvc
-          ./configure --target-os=win64 --arch=x86_64 --toolchain=msvc --disable-all --enable-avcodec --enable-decoder=h264 --enable-decoder=hevc --enable-hwaccel=h264_vaapi --enable-hwaccel=hevc_vaapi #--prefix='${{ github.workspace }}/ffmpeg/ffmpeg-prefix'
+          ./configure --target-os=win64 --arch=x86_64 --toolchain=msvc --disable-all --enable-avcodec --enable-decoder=h264 --enable-decoder=hevc --enable-hwaccel=h264_vaapi --enable-hwaccel=hevc_vaapi --prefix='${{ github.workspace }}/ffmpeg/ffmpeg-prefix'
           make -j4
           make install
 
