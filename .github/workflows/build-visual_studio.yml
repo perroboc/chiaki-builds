@@ -24,6 +24,7 @@ jobs:
 
       - name: Setup NASM
         run: |
+          $ProgressPreference = 'SilentlyContinue'
           Invoke-WebRequest -UseBasicParsing -Uri "https://www.nasm.us/pub/nasm/releasebuilds/2.15.05/win64/nasm-2.15.05-win64.zip" -OutFile ".\nasm-2.15.05-win64.zip"
           Expand-Archive -LiteralPath "nasm-2.15.05-win64.zip" -DestinationPath "."
           Rename-Item "nasm-2.15.05" "nasm"
@@ -31,6 +32,7 @@ jobs:
 
       - name: Setup ffmpeg
         run: |
+          $ProgressPreference = 'SilentlyContinue'
           Invoke-WebRequest -UseBasicParsing -Uri "https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-n5.0-latest-win64-gpl-shared-5.0.zip" -OutFile ".\ffmpeg-n5.0-latest-win64-gpl-shared-5.0.zip"
           Expand-Archive -LiteralPath "ffmpeg-n5.0-latest-win64-gpl-shared-5.0.zip" -DestinationPath "."
           Rename-Item "ffmpeg-n5.0-latest-win64-gpl-shared-5.0" "ffmpeg"
@@ -38,7 +40,7 @@ jobs:
 
       - name: Setup protoc
         uses: arduino/setup-protoc@v1.1.2
-        
+
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
@@ -91,6 +93,7 @@ jobs:
 
       - name: Setup SDL2
         run: |
+          $ProgressPreference = 'SilentlyContinue'
           Invoke-WebRequest -UseBasicParsing -Uri "https://www.libsdl.org/release/SDL2-devel-2.0.22-VC.zip" -OutFile ".\SDL2-devel-2.0.22-VC.zip"
           Expand-Archive -LiteralPath "SDL2-devel-2.0.22-VC.zip" -DestinationPath "."
           echo "SDL_ROOT=${{ github.workspace }}\SDL2-2.0.22" | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf8 -Append # export SDL_ROOT="$APPVEYOR_BUILD_FOLDER/SDL2-2.0.10" || exit 1
