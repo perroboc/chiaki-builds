@@ -65,7 +65,7 @@ jobs:
           Rename-Item "SDL2-2.0.22" "SDL2"
           $nix_path = "${{ github.workspace }}" -replace "\\", "/"
           Write-Output "SDL2_DIR=${{ github.workspace }}\SDL2" | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf8 -Append
-          Set-Content -Path "${{ github.workspace }}\SDL2\sdl2-config.cmake" -Value 'set(TARGET_NAME SDL2)'
+          Set-Content -Path "${{ github.workspace }}\SDL2\sdl2-config.cmake" -Value 'set(TARGET_NAME SDL2::SDL2)'
           Add-Content -Path "${{ github.workspace }}\SDL2\sdl2-config.cmake" -Value 'add_library(${TARGET_NAME} SHARED IMPORTED)'
           Add-Content -Path "${{ github.workspace }}\SDL2\sdl2-config.cmake" -Value 'set_target_properties(${TARGET_NAME} PROPERTIES'
           Add-Content -Path "${{ github.workspace }}\SDL2\sdl2-config.cmake" -Value '    IMPORTED_LOCATION $ENV{SDL2_DIR}/lib/x64/SDL2.dll'
