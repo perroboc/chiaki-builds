@@ -70,12 +70,13 @@ jobs:
           git clone https://github.com/xiph/opus.git
           cd opus
           mkdir build
-          cd build
           cmake `
+          -S . `
+          -B build `
           -G "Visual Studio 17 2022" -A x64 `
           -DCMAKE_C_COMPILER=cl `
           -DCMAKE_BUILD_TYPE=Release `
-          -DCMAKE_INSTALL_PREFIX="${{ github.workspace }}/opus-prefix"
+          -DCMAKE_INSTALL_PREFIX="${{ github.workspace }}\opus-prefix"
           cmake --build build
 
       - name: Setup SDL2
