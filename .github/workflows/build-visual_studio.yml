@@ -49,7 +49,6 @@ jobs:
           toolset: "14.29"
 
       - name: Build FFMPEG
-        shell: bash
         run: |
           git clone https://git.ffmpeg.org/ffmpeg.git --branch "n5.0.1" --single-branch #was 4.3.1
           cd ffmpeg
