@@ -43,7 +43,7 @@ jobs:
           $ProgressPreference = 'SilentlyContinue'
           Invoke-WebRequest -UseBasicParsing -Uri "https://www.libsdl.org/release/SDL2-devel-2.0.22-VC.zip" -OutFile ".\SDL2-devel-2.0.22-VC.zip"
           Expand-Archive -LiteralPath "SDL2-devel-2.0.22-VC.zip" -DestinationPath "."
-          echo "SDL_ROOT=${{ github.workspace }}\SDL2-2.0.22" | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf8 -Append # export SDL_ROOT="$APPVEYOR_BUILD_FOLDER/SDL2-2.0.10" || exit 1
+          echo "SDL_ROOT=${{ github.workspace }}\SDL2-2.0.22" | Out-File -FilePath $Env:GITHUB_PATH -Encoding utf8 -Append
           Add-Content -Path "${{ github.workspace }}\SDL2-2.0.22\SDL2Config.cmake" -Value 'set(SDL2_INCLUDE_DIRS \"$SDL_ROOT/include\")'
           Add-Content -Path "${{ github.workspace }}\SDL2-2.0.22\SDL2Config.cmake" -Value 'set(SDL2_LIBRARIES \"$SDL_ROOT/lib/x64/SDL2.lib\")'
           Add-Content -Path "${{ github.workspace }}\SDL2-2.0.22\SDL2Config.cmake" -Value 'set(SDL2_LIBDIR \"$SDL_ROOT/lib/x64\")'
@@ -62,7 +62,14 @@ jobs:
           python3 -m pip install --upgrade setuptools wheel
           python3 -m pip install --user --upgrade scons protobuf grpcio-tools pyinstaller
           python3 -c 'import google.protobuf; print(google.protobuf.__file__)'
-
+      
+      - name: Build nanopb
+        working-directory: chiaki
+        shell: bash
+        run: |
+          cd third-party/nanopb
+          ./tools/make_windows_package.sh
+          
       - name: Setup Qt
         uses: jurplel/install-qt-action@v2
         with:
@@ -105,13 +112,6 @@ jobs:
           -DCMAKE_INSTALL_PREFIX="${{ github.workspace }}\opus-prefix"
           cmake --build build --config Release
           cmake --install build
-
-      - name: Build nanopb
-        working-directory: chiaki
-        shell: bash
-        run: |
-          cd third-party/nanopb
-          ./tools/make_windows_package.sh
 
       - name: Configure
         working-directory: chiaki
