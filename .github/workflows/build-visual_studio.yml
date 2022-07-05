@@ -146,12 +146,10 @@ jobs:
           -DCHIAKI_ENABLE_CLI=OFF `
           -DCHIAKI_GUI_ENABLE_SDL_GAMECONTROLLER=ON `
           -DPYTHON_EXECUTABLE=${{ env.pythonLocation }}\python.exe `
-          -DSDL2_PATH="${{ github.workspace }}\SDL2" `
-          -DCMAKE_PREFIX_PATH="${{ github.workspace }}\ffmpeg;${{ github.workspace }}\opus-prefix;${{ github.workspace }}\openssl\x64;${{ github.workspace }}\SDL2;$Qt5_Dir"
+          -DCMAKE_PREFIX_PATH="${{ github.workspace }}\ffmpeg;${{ github.workspace }}\opus-prefix;${{ github.workspace }}\openssl\x64;${{ github.workspace }}\SDL2;${{ env.Qt5_Dir }}"
 
       
       - name: Build
         working-directory: chiaki
         run: |
           cmake --build build --config Release --target chiaki --
-          ls -R
