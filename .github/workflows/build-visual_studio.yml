@@ -63,10 +63,11 @@ jobs:
           Invoke-WebRequest -UseBasicParsing -Uri "https://www.libsdl.org/release/SDL2-devel-2.0.22-VC.zip" -OutFile ".\SDL2-devel-2.0.22-VC.zip"
           Expand-Archive -LiteralPath "SDL2-devel-2.0.22-VC.zip" -DestinationPath "."
           Rename-Item "SDL2-2.0.22" "SDL2"
-          Write-Output "SDL_ROOT=${{ github.workspace }}\SDL2" | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf8 -Append
-          Set-Content -Path "${{ github.workspace }}\SDL2\SDL2Config.cmake" -Value 'set(SDL2_INCLUDE_DIRS \"${{ github.workspace }}\SDL2\include\")'
-          Add-Content -Path "${{ github.workspace }}\SDL2\SDL2Config.cmake" -Value 'set(SDL2_LIBRARIES \"${{ github.workspace }}\SDL2\lib\x64\SDL2.lib\")'
-          Add-Content -Path "${{ github.workspace }}\SDL2\SDL2Config.cmake" -Value 'set(SDL2_LIBDIR \"${{ github.workspace }}\SDL2\lib\x64\")'
+          $nix_path = "${{ github.workspace }}" -replace "\", "/"
+          Write-Output "SDL2_DIR=${{ github.workspace }}\SDL2" | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf8 -Append
+          Set-Content -Path "${{ github.workspace }}\SDL2\SDL2Config.cmake" -Value 'set(SDL2_INCLUDE_DIRS \"$nix_path/SDL2/include\")'
+          Add-Content -Path "${{ github.workspace }}\SDL2\SDL2Config.cmake" -Value 'set(SDL2_LIBRARIES \"$nix_path/SDL2/lib/x64/SDL2.lib\")'
+          Add-Content -Path "${{ github.workspace }}\SDL2\SDL2Config.cmake" -Value 'set(SDL2_LIBDIR \"$nix_path/SDL2/lib/x64\")'
 
       - name: Setup Python
         uses: actions/setup-python@v4
