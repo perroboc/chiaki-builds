@@ -97,7 +97,7 @@ jobs:
         uses: ilammy/msvc-dev-cmd@v1
         with:
           arch: "x86_64"
-          toolset: "14.29"
+          toolset: "15.XX"
 
       # - name: Build FFMPEG
       #   run: |
@@ -124,7 +124,7 @@ jobs:
           cmake `
           -S . `
           -B build `
-          -G "Visual Studio 16 2019" -A x64 `
+          -G "Visual Studio 17 2022" -A x64 `
           -DCMAKE_C_COMPILER=cl `
           -DCMAKE_BUILD_TYPE=Release `
           -DCMAKE_INSTALL_PREFIX="${{ github.workspace }}\opus-prefix"
@@ -140,7 +140,7 @@ jobs:
           cmake `
           -S . `
           -B build `
-          -G "Visual Studio 16 2019" -A x64 `
+          -G "Visual Studio 17 2022" -A x64 `
           -DCMAKE_C_COMPILER=cl `
           -DCMAKE_C_FLAGS="-we4013" `
           -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE `
