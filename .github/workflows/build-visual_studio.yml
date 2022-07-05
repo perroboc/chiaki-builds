@@ -81,7 +81,8 @@ jobs:
 
       - name: Setup SDL2
         run: |
-          wget https://www.libsdl.org/release/SDL2-devel-2.0.22-VC.zip
+
+          Invoke-WebRequest -UseBasicParsing -Uri "https://www.libsdl.org/release/SDL2-devel-2.0.22-VC.zip" -OutFile ".\SDL2-devel-2.0.22-VC.zip"
           Expand-Archive -LiteralPath "SDL2-devel-2.0.22-VC.zip" -DestinationPath "."
           echo "SDL_ROOT=${{ github.workspace }}\SDL2-2.0.22" | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf8 -Append # export SDL_ROOT="$APPVEYOR_BUILD_FOLDER/SDL2-2.0.10" || exit 1
           Add-Content -Path "${{ github.workspace }}\SDL2-2.0.22\SDL2Config.cmake" -Value 'set(SDL2_INCLUDE_DIRS \"$SDL_ROOT/include\")'
