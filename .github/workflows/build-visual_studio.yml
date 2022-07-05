@@ -24,7 +24,7 @@ jobs:
           Write-Output "created yasm dir"
           Set-Location ./yasm
           "pwd is {0}" -f (Get-Location) | Write-Output
-          Invoke-WebRequest http://www.tortall.net/projects/yasm/releases/yasm-1.3.0-win64.exe -OutFile "yasm.exe"
+          Invoke-WebRequest -UseBasicParsing -Uri "http://www.tortall.net/projects/yasm/releases/yasm-1.3.0-win64.exe" -OutFile ".\yasm.exe"
           Write-Output "downloaded yasm"
           $test = ./yasm.exe --version
           "yasm version output: {0}" -f $test | Write-Output
