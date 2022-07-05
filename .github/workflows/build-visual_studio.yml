@@ -65,10 +65,13 @@ jobs:
           Rename-Item "SDL2-2.0.22" "SDL2"
           $nix_path = "${{ github.workspace }}" -replace "\\", "/"
           Write-Output "SDL2_DIR=${{ github.workspace }}\SDL2" | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf8 -Append
-          Set-Content -Path "${{ github.workspace }}\SDL2\sdl2-config.cmake" -Value 'set(SDL2_INCLUDE_DIRS "${CMAKE_CURRENT_LIST_DIR}/SDL2/include")'
-          Add-Content -Path "${{ github.workspace }}\SDL2\sdl2-config.cmake" -Value 'set(SDL2_LIBRARIES "${CMAKE_CURRENT_LIST_DIR}/SDL2/lib/x64/SDL2.lib;${CMAKE_CURRENT_LIST_DIR}/SDL2/lib/x64/SDL2main.lib")'
-          Add-Content -Path "${{ github.workspace }}\SDL2\sdl2-config.cmake" -Value 'set(SDL2_LIBDIR "${CMAKE_CURRENT_LIST_DIR}/SDL2/lib/x64")'
-          Add-Content -Path "${{ github.workspace }}\SDL2\sdl2-config.cmake" -Value 'string(STRIP "${SDL2_LIBRARIES}" SDL2_LIBRARIES)'
+          Set-Content -Path "${{ github.workspace }}\SDL2\sdl2-config.cmake" -Value 'set(TARGET_NAME SDL2::SDL2)'
+          Add-Content -Path "${{ github.workspace }}\SDL2\sdl2-config.cmake" -Value 'add_library(${TARGET_NAME} SHARED IMPORTED)'
+          Add-Content -Path "${{ github.workspace }}\SDL2\sdl2-config.cmake" -Value 'set_target_properties(${TARGET_NAME} PROPERTIES'
+          Add-Content -Path "${{ github.workspace }}\SDL2\sdl2-config.cmake" -Value '    IMPORTED_LOCATION $ENV{SDL2_DIR}/lib/x64/SDL2.dll'
+          Add-Content -Path "${{ github.workspace }}\SDL2\sdl2-config.cmake" -Value '    INTERFACE_INCLUDE_DIRECTORIES $ENV{SDL2_DIR}/include'
+          Add-Content -Path "${{ github.workspace }}\SDL2\sdl2-config.cmake" -Value '    INTERFACE_LINK_LIBRARIES "$ENV{SDL2_DIR}/lib/x64/SDL2.lib;$ENV{SDL2_DIR}/lib/x64/SDL2main.lib"'
+          Add-Content -Path "${{ github.workspace }}\SDL2\sdl2-config.cmake" -Value ')'
           Get-Content -Path "${{ github.workspace }}\SDL2\sdl2-config.cmake"
 
       - name: Setup Python
@@ -150,7 +153,6 @@ jobs:
           -DCHIAKI_ENABLE_CLI=OFF `
           -DCHIAKI_GUI_ENABLE_SDL_GAMECONTROLLER=ON `
           -DPYTHON_EXECUTABLE="${{ env.pythonLocation }}\python.exe" `
-          -DINCLUDE_DIRECTORIES="$INCLUDE_DIRECTORIES;${{ github.workspace }}\SDL2\include" `
           -DCMAKE_EXE_LINKER_FLAGS="$CMAKE_EXE_LINKER_FLAGS -lSDL2 -lwinpthread -lavformat -lavcodec -lavutil" `
           -DCMAKE_PREFIX_PATH="${{ github.workspace }}\nanopb;${{ github.workspace }}\ffmpeg;${{ github.workspace }}\opus-prefix;${{ github.workspace }}\openssl\x64;${{ github.workspace }}\SDL2;${{ env.Qt5_Dir }}"
 
