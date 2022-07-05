@@ -41,13 +41,13 @@ jobs:
       - name: Install Protoc
         uses: arduino/setup-protoc@v1
 
-      # - name: Setup nanopb
-      #   run: |
-      #     $ProgressPreference = 'SilentlyContinue'
-      #     Invoke-WebRequest -UseBasicParsing -Uri "https://jpa.kapsi.fi/nanopb/download/nanopb-0.4.6-windows-x86.zip" -OutFile ".\nanopb-0.4.6-windows-x86.zip"
-      #     Expand-Archive -LiteralPath "nanopb-0.4.6-windows-x86.zip" -DestinationPath "."
-      #     Rename-Item "nanopb-0.4.6-windows-x86" "nanopb"
-      #     Write-Output "${{ github.workspace }}\nanopb\generator-bin" | Out-File -FilePath $Env:GITHUB_PATH -Encoding utf8 -Append
+      - name: Setup nanopb
+        run: |
+          $ProgressPreference = 'SilentlyContinue'
+          Invoke-WebRequest -UseBasicParsing -Uri "https://jpa.kapsi.fi/nanopb/download/nanopb-0.4.6-windows-x86.zip" -OutFile ".\nanopb-0.4.6-windows-x86.zip"
+          Expand-Archive -LiteralPath "nanopb-0.4.6-windows-x86.zip" -DestinationPath "."
+          Rename-Item "nanopb-0.4.6-windows-x86" "nanopb"
+      #     Write-Output "\generator-bin" | Out-File -FilePath $Env:GITHUB_PATH -Encoding utf8 -Append
 
       - name: Setup OpenSSL
         run: |
@@ -149,7 +149,7 @@ jobs:
           -DCHIAKI_GUI_ENABLE_SDL_GAMECONTROLLER=ON `
           -DPYTHON_EXECUTABLE="${{ env.pythonLocation }}\python.exe" `
           -DCMAKE_EXE_LINKER_FLAGS="$CMAKE_EXE_LINKER_FLAGS -lSDL2 -lSDLmain -lwinpthread -lavformat -lavcodec -lavutil" `
-          -DCMAKE_PREFIX_PATH="${{ github.workspace }}\ffmpeg;${{ github.workspace }}\opus-prefix;${{ github.workspace }}\openssl\x64;${{ github.workspace }}\SDL2;${{ env.Qt5_Dir }}"
+          -DCMAKE_PREFIX_PATH="${{ github.workspace }}\nanopb;${{ github.workspace }}\ffmpeg;${{ github.workspace }}\opus-prefix;${{ github.workspace }}\openssl\x64;${{ github.workspace }}\SDL2;${{ env.Qt5_Dir }}"
 
       - name: Build
         working-directory: chiaki
