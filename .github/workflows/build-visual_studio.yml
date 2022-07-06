@@ -144,9 +144,9 @@ jobs:
           cp "${{ github.workspace }}\openssl\x64\bin\libcrypto-1_1-x64.dll" Chiaki-VC
           cp "${{ github.workspace }}\openssl\x64\bin\libssl-1_1-x64.dll" Chiaki-VC
           cp "${{ github.workspace }}\SDL2\lib\x64\SDL2.dll" Chiaki-VC
-          ${{ github.workspace }}\ffmpeg\bin\swresample-4.dll Chiaki-VC
-          ${{ github.workspace }}\ffmpeg\bin\avcodec-59.dll Chiaki-VC
-          ${{ github.workspace }}\ffmpeg\bin\avutil-57.dll Chiaki-VC
+          cp "${{ github.workspace }}\ffmpeg\bin\swresample-4.dll" Chiaki-VC
+          cp "${{ github.workspace }}\ffmpeg\bin\avcodec-59.dll" Chiaki-VC
+          cp "${{ github.workspace }}\ffmpeg\bin\avutil-57.dll" Chiaki-VC
           windeployqt.exe --no-translations Chiaki-VC\chiaki.exe
 
       - name: Package Chiaki
@@ -167,7 +167,7 @@ jobs:
           path: ${{ env.RELEASE_PACKAGE_PATH }}
           if-no-files-found: error
           retention-days: 1
-          
+
   create-release:
     name: Create release
     runs-on: windows-2022
