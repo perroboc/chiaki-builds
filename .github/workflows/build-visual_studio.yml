@@ -165,7 +165,7 @@ jobs:
         working-directory: chiaki
         run: |
           mkdir Chiaki-VC
-          cp build\gui\chiaki.exe Chiaki-VC
+          cp build\gui\Release\chiaki.exe Chiaki-VC
           cp "${{ github.workspace }}\openssl\x64\bin\libcrypto-1_1-x64.dll" Chiaki-VC
           cp "${{ github.workspace }}\openssl\x64\bin\libssl-1_1-x64.dll" Chiaki-VC
           cp "${{ github.workspace }}\SDL2\lib\x64\SDL2.dll" Chiaki-VC
