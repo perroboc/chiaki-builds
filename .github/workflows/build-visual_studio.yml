@@ -38,7 +38,7 @@ jobs:
           Rename-Item "ffmpeg-n5.0-latest-win64-gpl-shared-5.0" "ffmpeg"
           Write-Output "${{ github.workspace }}\ffmpeg" | Out-File -FilePath $Env:GITHUB_PATH -Encoding utf8 -Append
 
-      - name: Install Protoc
+      - name: Setup Protoc
         uses: arduino/setup-protoc@v1
 
       - name: Setup nanopb
@@ -76,8 +76,6 @@ jobs:
           #Add-Content -Path "${{ github.workspace }}\SDL2\sdl2-config.cmake" -Value 'target_include_directories(${TARGET_NAME} INTERFACE $ENV{SDL2_DIR})'
           Add-Content -Path "${{ github.workspace }}\SDL2\sdl2-config.cmake" -Value 'set_target_properties(SDL2::SDL2 PROPERTIES IMPORTED_IMPLIB "$ENV{SDL2_DIR}/lib/x64/SDL2.lib")'
           Get-Content -Path "${{ github.workspace }}\SDL2\sdl2-config.cmake"
-
-
 
       - name: Setup Python
         uses: actions/setup-python@v4
@@ -126,7 +124,7 @@ jobs:
       # - name: Put MSYS2_MinGW64 on PATH
       #   run: echo "${{ runner.temp }}\msys64\mingw64\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
 
-      - name: Build Opus
+      - name: Configure & Build Opus
         run: |
           git clone https://github.com/xiph/opus.git
           cd opus
@@ -141,9 +139,7 @@ jobs:
           cmake --build build --config Release
           cmake --install build
 
-      # missing
-      # Could NOT find nanopb (missing: nanopb_DIR)
-      - name: Configure
+      - name: Configure Chiaki
         working-directory: chiaki
         run: |
           
@@ -160,7 +156,7 @@ jobs:
           -DPYTHON_EXECUTABLE="${{ env.pythonLocation }}\python.exe" `
           -DCMAKE_PREFIX_PATH="${{ github.workspace }}\nanopb;${{ github.workspace }}\ffmpeg;${{ github.workspace }}\opus-prefix;${{ github.workspace }}\openssl\x64;${{ github.workspace }}\SDL2;${{ env.Qt5_Dir }}"
 
-      - name: Build
+      - name: Build Chiaki
         working-directory: chiaki
         run: |
           cmake --build build --config Release --clean-first --target chiaki
@@ -175,7 +171,7 @@ jobs:
           cp "${{ github.workspace }}\SDL2\lib\x64\SDL2.dll" Chiaki-VC
           windeployqt.exe Chiaki-VC\chiaki.exe #--no-translations
       
-      - name: Package
+      - name: Package Chiaki
         working-directory: chiaki
         run: |
           $CHIAKI_VERSION_MAJOR = (Select-String -Path .\CMakeLists.txt -Pattern 'set\(CHIAKI_VERSION_MAJOR ([0-9]+)\)') | %{$_.Matches.Groups[1].value}
@@ -186,7 +182,7 @@ jobs:
           $release_filepath = Get-ChildItem $RELEASE_PACKAGE_FILE | %{$_[0].FullName}
           echo "RELEASE_PACKAGE_PATH=$release_filepath" | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf8 -Append
 
-      - name: Upload Artifact
+      - name: Upload Chiaki Artifact
         uses: actions/upload-artifact@v3
         with:
           name: Chiaki-win_x64-VC-Release
