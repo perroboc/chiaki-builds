@@ -68,11 +68,13 @@ jobs:
           Set-Content -Path "${{ github.workspace }}\SDL2\sdl2-config.cmake" -Value 'set(TARGET_NAME SDL2::SDL2)'
           Add-Content -Path "${{ github.workspace }}\SDL2\sdl2-config.cmake" -Value 'add_library(${TARGET_NAME} SHARED IMPORTED)'
           Add-Content -Path "${{ github.workspace }}\SDL2\sdl2-config.cmake" -Value 'set_target_properties(${TARGET_NAME} PROPERTIES'
-          Add-Content -Path "${{ github.workspace }}\SDL2\sdl2-config.cmake" -Value '    IMPORTED_LOCATION $ENV{SDL2_DIR}/lib/x64/SDL2.dll'
-          Add-Content -Path "${{ github.workspace }}\SDL2\sdl2-config.cmake" -Value '    INTERFACE_INCLUDE_DIRECTORIES $ENV{SDL2_DIR}/include'
+          Add-Content -Path "${{ github.workspace }}\SDL2\sdl2-config.cmake" -Value '    IMPORTED_LOCATION "${SDL2_LIBDIR}/${CMAKE_SHARED_LIBRARY_PREFIX}SDL2${CMAKE_SHARED_LIBRARY_SUFFIX}"'
+          Add-Content -Path "${{ github.workspace }}\SDL2\sdl2-config.cmake" -Value '    INTERFACE_INCLUDE_DIRECTORIES "$ENV{SDL2_DIR}/include"'
           Add-Content -Path "${{ github.workspace }}\SDL2\sdl2-config.cmake" -Value '    INTERFACE_LINK_LIBRARIES "$ENV{SDL2_DIR}/lib/x64/SDL2.lib;$ENV{SDL2_DIR}/lib/x64/SDL2main.lib"'
+          Add-Content -Path "${{ github.workspace }}\SDL2\sdl2-config.cmake" -Value '    IMPORTED_LINK_INTERFACE_LANGUAGES "C"'
           Add-Content -Path "${{ github.workspace }}\SDL2\sdl2-config.cmake" -Value ')'
-          Add-Content -Path "${{ github.workspace }}\SDL2\sdl2-config.cmake" -Value 'target_include_directories(${TARGET_NAME} INTERFACE $ENV{SDL2_DIR})'
+          #Add-Content -Path "${{ github.workspace }}\SDL2\sdl2-config.cmake" -Value 'target_include_directories(${TARGET_NAME} INTERFACE $ENV{SDL2_DIR})'
+          Add-Content -Path "${{ github.workspace }}\SDL2\sdl2-config.cmake" -Value 'set_target_properties(SDL2::SDL2 PROPERTIES IMPORTED_IMPLIB "$ENV{SDL2_DIR}/lib/x64/SDL2.lib")'
           Get-Content -Path "${{ github.workspace }}\SDL2\sdl2-config.cmake"
 
 
