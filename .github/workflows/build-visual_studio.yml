@@ -154,11 +154,10 @@ jobs:
           -DCMAKE_C_COMPILER=cl `
           -DCMAKE_C_FLAGS="-we4013" `
           -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE `
-          -DCMAKE_BUILD_TYPE=Release `
+          -DCMAKE_BUILD_TYPE=RelWithDebInfo  `
           -DCHIAKI_ENABLE_CLI=OFF `
           -DCHIAKI_GUI_ENABLE_SDL_GAMECONTROLLER=ON `
           -DPYTHON_EXECUTABLE="${{ env.pythonLocation }}\python.exe" `
-          -DCMAKE_EXE_LINKER_FLAGS="$CMAKE_EXE_LINKER_FLAGS /NODEFAULTLIB:LIBCMT" `
           -DCMAKE_PREFIX_PATH="${{ github.workspace }}\nanopb;${{ github.workspace }}\ffmpeg;${{ github.workspace }}\opus-prefix;${{ github.workspace }}\openssl\x64;${{ github.workspace }}\SDL2;${{ env.Qt5_Dir }}"
 
       - name: Build
