@@ -23,5 +23,5 @@ jobs:
       - name: Create Release
         uses: ncipollo/release-action@v1.10.0
         with:
-          artifacts: "*.zip"
+          artifacts: "**/*.zip"
           body: "Automatic release built with Github actions."
