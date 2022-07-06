@@ -1,11 +1,12 @@
 # (Unofficial) Chiaki builds
 
-[![Build Chiaki on GitHub Actions](https://github.com/alvaromunoz/chiaki-builds/actions/workflows/build-artifacts.yml/badge.svg)](https://github.com/alvaromunoz/chiaki-builds/actions/workflows/build-artifacts.yml)
+[![Build Chiaki with MSYS2](https://github.com/alvaromunoz/chiaki-builds/actions/workflows/build-msys2.yml/badge.svg)](https://github.com/alvaromunoz/chiaki-builds/actions/workflows/build-msys2.yml)
+[![Build Chiaki with Visual Studio](https://github.com/alvaromunoz/chiaki-builds/actions/workflows/build-visual_studio.yml/badge.svg)](https://github.com/alvaromunoz/chiaki-builds/actions/workflows/build-visual_studio.yml)
 
 This is just a repo with [Chiaki](https://git.sr.ht/~thestr4ng3r/chiaki) as a
 Git submodule, automating the build scripts on GitHub Actions Workflows.
 
-So far only Windows x64 builds have been automated.
+So far only Windows x64 builds have been automated, using both MSYS2 and Visual Studio.
 
 If you want to download the official releases, please check out the original repo:
 [https://git.sr.ht/~thestr4ng3r/chiaki](https://git.sr.ht/~thestr4ng3r/chiaki)
@@ -21,7 +22,22 @@ controllers in Windows), and the binary release has a problem with blinking
 frames. It seems that building using updated libraries and software fixes
 these issues, so I wanted to automate this to be as open as possible.
 
-## About Chiaki
+### What's updated by new libraries?
+
+- Support for PlayStation Dualsense and XBox Series S|X controllers
+- Hardware video acceleration for decoding
+
+### What's not updated?
+
+- Choppy audio (YMMV)
+
+### What's missing (but from the official release, too)?
+
+- Motion controls
+- Rumble / force feedback
+- Adaptative triggers
+
+# About Chiaki
 
 Chiaki created by Florian Märkl
 
