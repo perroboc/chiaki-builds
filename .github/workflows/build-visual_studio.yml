@@ -1,10 +1,7 @@
 name: Build Chiaki with Visual Studio
 
 on:
-  workflow_dispatch:
-  push:
-    tags:
-      - "Release*"
+  workflow_call:
 
 jobs:
   build-win_x64: # only win_x64 so far :)
@@ -167,19 +164,3 @@ jobs:
           path: ${{ env.RELEASE_PACKAGE_PATH }}
           if-no-files-found: error
           retention-days: 1
-
-  create-release:
-    name: Create release
-    runs-on: windows-2022
-    needs: build-win_x64
-    steps:
-      - name: Download win_x64 artifact
-        uses: actions/download-artifact@v3
-        with:
-          name: Chiaki-win_x64-VC-Release
-
-      - name: Create Release
-        uses: ncipollo/release-action@v1.10.0
-        with:
-          artifacts: "*.zip"
-          body: "Automatic release built with Github actions."

@@ -1,0 +1,26 @@
+name: Build Release
+
+push:
+    tags:
+      - "Release*"
+
+jobs:
+  call-build-win_x64-vc:
+    name: Build win_x64 VC
+    uses: ./.github/workflows/build-visual_studio.yml
+  call-build-win_x64-msys2:
+    name: Build win_x64 MSYS2
+    uses: ./.github/workflows/build-msys2.yml
+  create-release:
+    name: Create Release
+    needs: [call-build-win_x64-vc, call-build-win_x64-msys2]
+    runs-on: windows-2022
+    steps:
+      - name: Download win_x64 artifacts
+        uses: actions/download-artifact@v3
+
+      - name: Create Release
+        uses: ncipollo/release-action@v1.10.0
+        with:
+          artifacts: "*.zip"
+          body: "Automatic release built with Github actions."

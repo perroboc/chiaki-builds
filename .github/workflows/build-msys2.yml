@@ -1,10 +1,8 @@
 name: Build Chiaki with MSYS2
 
 on:
-  workflow_dispatch:
-  push:
-    tags:
-      - "Release*"
+  workflow_call:
+
 jobs:
   build-win_x64: # only win_x64 so far :)
     name: Build Chiaki win_x64 (MSYS2)
