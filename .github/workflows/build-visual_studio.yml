@@ -176,7 +176,7 @@ jobs:
       - name: Download win_x64 artifact
         uses: actions/download-artifact@v3
         with:
-          name: Chiaki-win_x64-Release
+          name: Chiaki-win_x64-VC-Release
 
       - name: Create Release
         uses: ncipollo/release-action@v1.10.0
