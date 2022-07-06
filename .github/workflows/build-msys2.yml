@@ -1,4 +1,4 @@
-name: Build Chiaki on GitHub Actions
+name: Build Chiaki with MSYS2
 
 on:
   workflow_dispatch:
@@ -7,7 +7,7 @@ on:
       - "Release*"
 jobs:
   build-win_x64: # only win_x64 so far :)
-    name: Build Chiaki Windows x64 binary
+    name: Build Chiaki win_x64 (MSYS2)
     runs-on: windows-2022
 
     defaults:
@@ -15,7 +15,6 @@ jobs:
         working-directory: chiaki
 
     steps:
-
       - name: Clean Workspace Action
         uses: yumis-coconudge/clean-workspace-action@v1.0.5
 
@@ -84,10 +83,10 @@ jobs:
           -DPYTHON_EXECUTABLE=${{ env.pythonLocation }}\python.exe
 
       - name: Build
-        shell: pwsh # cmake --build build --config Release --target chiaki -- 
+        shell: pwsh # cmake --build build --config Release --target chiaki --
         run: |
           ninja -C build
-          
+
       - name: Copy files to deployment folder
         shell: pwsh
         run: |

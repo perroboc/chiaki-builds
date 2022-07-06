@@ -2,10 +2,13 @@ name: Build Chiaki with Visual Studio
 
 on:
   workflow_dispatch:
+  push:
+    tags:
+      - "Release*"
 
 jobs:
   build-win_x64: # only win_x64 so far :)
-    name: Build Chiaki Windows x64 binary
+    name: Build Chiaki win_x64 (VC)
     runs-on: windows-2022
 
     defaults:
@@ -13,7 +16,6 @@ jobs:
         shell: powershell
 
     steps:
-
       - name: Clean Workspace Action
         uses: yumis-coconudge/clean-workspace-action@v1.0.5
 
@@ -47,8 +49,7 @@ jobs:
           Invoke-WebRequest -UseBasicParsing -Uri "https://jpa.kapsi.fi/nanopb/download/nanopb-0.4.6-windows-x86.zip" -OutFile ".\nanopb-0.4.6-windows-x86.zip"
           Expand-Archive -LiteralPath "nanopb-0.4.6-windows-x86.zip" -DestinationPath "."
           Rename-Item "nanopb-0.4.6-windows-x86" "nanopb"
-      #     Write-Output "\generator-bin" | Out-File -FilePath $Env:GITHUB_PATH -Encoding utf8 -Append
-
+          
       - name: Setup OpenSSL
         run: |
           $ProgressPreference = 'SilentlyContinue'
@@ -73,7 +74,6 @@ jobs:
           Add-Content -Path "${{ github.workspace }}\SDL2\sdl2-config.cmake" -Value '    INTERFACE_LINK_LIBRARIES "$ENV{SDL2_DIR}/lib/x64/SDL2.lib;$ENV{SDL2_DIR}/lib/x64/SDL2main.lib"'
           Add-Content -Path "${{ github.workspace }}\SDL2\sdl2-config.cmake" -Value '    IMPORTED_LINK_INTERFACE_LANGUAGES "C"'
           Add-Content -Path "${{ github.workspace }}\SDL2\sdl2-config.cmake" -Value ')'
-          #Add-Content -Path "${{ github.workspace }}\SDL2\sdl2-config.cmake" -Value 'target_include_directories(${TARGET_NAME} INTERFACE $ENV{SDL2_DIR})'
           Add-Content -Path "${{ github.workspace }}\SDL2\sdl2-config.cmake" -Value 'set_target_properties(SDL2::SDL2 PROPERTIES IMPORTED_IMPLIB "$ENV{SDL2_DIR}/lib/x64/SDL2.lib")'
           Get-Content -Path "${{ github.workspace }}\SDL2\sdl2-config.cmake"
 
@@ -88,13 +88,6 @@ jobs:
           python3 -m pip install --upgrade setuptools wheel
           python3 -m pip install --user --upgrade scons protobuf grpcio-tools pyinstaller
           python3 -c 'import google.protobuf; print(google.protobuf.__file__)'
-      
-      # - name: Build nanopb
-      #   working-directory: chiaki
-      #   shell: bash
-      #   run: |
-      #     cd third-party/nanopb
-      #     ./tools/make_windows_package.sh
 
       - name: Setup Qt
         uses: jurplel/install-qt-action@v2
@@ -106,23 +99,6 @@ jobs:
         with:
           arch: "x86_64"
           toolset: "14"
-
-      # - name: Build FFMPEG
-      #   run: |
-      #     git clone https://git.ffmpeg.org/ffmpeg.git --branch "n5.0.1" --single-branch #was 4.3.1
-      #     cd ffmpeg
-      #     ./configure --disable-all --enable-avcodec --enable-decoder=h264 --enable-decoder=hevc --enable-hwaccel=h264_vaapi --enable-hwaccel=hevc_vaapi --prefix='${{ github.workspace }}\ffmpeg\ffmpeg-prefix' --target-os=win64 --arch=x86_64 --toolchain=msvc 
-      #     make -j4
-      #     make install
-
-      # - name: Setup MSYS2
-      #   uses: msys2/setup-msys2@v2
-      #   with:
-      #     pacboy: >-
-      #       ffmpeg:p
-          
-      # - name: Put MSYS2_MinGW64 on PATH
-      #   run: echo "${{ runner.temp }}\msys64\mingw64\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
 
       - name: Configure & Build Opus
         run: |
@@ -142,7 +118,6 @@ jobs:
       - name: Configure Chiaki
         working-directory: chiaki
         run: |
-          
           cmake `
           -S . `
           -B build `
@@ -160,7 +135,7 @@ jobs:
         working-directory: chiaki
         run: |
           cmake --build build --config Release --clean-first --target chiaki
-      
+
       - name: Prepare Qt deployment package
         working-directory: chiaki
         run: |
@@ -173,7 +148,7 @@ jobs:
           ${{ github.workspace }}\ffmpeg\bin\avcodec-59.dll Chiaki-VC
           ${{ github.workspace }}\ffmpeg\bin\avutil-57.dll Chiaki-VC
           windeployqt.exe --no-translations Chiaki-VC\chiaki.exe
-      
+
       - name: Package Chiaki
         working-directory: chiaki
         run: |
@@ -192,3 +167,19 @@ jobs:
           path: ${{ env.RELEASE_PACKAGE_PATH }}
           if-no-files-found: error
           retention-days: 1
+          
+  create-release:
+    name: Create release
+    runs-on: windows-2022
+    needs: build-win_x64
+    steps:
+      - name: Download win_x64 artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: Chiaki-win_x64-Release
+
+      - name: Create Release
+        uses: ncipollo/release-action@v1.10.0
+        with:
+          artifacts: "*.zip"
+          body: "Automatic release built with Github actions."
