@@ -1,7 +1,6 @@
 # (Unofficial) Chiaki builds
 
-[![Build Chiaki with MSYS2](https://github.com/alvaromunoz/chiaki-builds/actions/workflows/build-msys2.yml/badge.svg)](https://github.com/alvaromunoz/chiaki-builds/actions/workflows/build-msys2.yml)
-[![Build Chiaki with Visual Studio](https://github.com/alvaromunoz/chiaki-builds/actions/workflows/build-visual_studio.yml/badge.svg)](https://github.com/alvaromunoz/chiaki-builds/actions/workflows/build-visual_studio.yml)
+[![Build Release](https://github.com/alvaromunoz/chiaki-builds/actions/workflows/Build-win_x64.yml/badge.svg)](https://github.com/alvaromunoz/chiaki-builds/actions/workflows/Build-win_x64.yml)
 
 This is just a repo with [Chiaki](https://git.sr.ht/~thestr4ng3r/chiaki) as a
 Git submodule, automating the build scripts on GitHub Actions Workflows.
