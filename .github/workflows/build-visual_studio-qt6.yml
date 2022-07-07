@@ -90,12 +90,20 @@ jobs:
           python3 -m pip install --user --upgrade scons protobuf grpcio-tools pyinstaller
           python3 -c 'import google.protobuf; print(google.protobuf.__file__)'
 
+      # aqt list-qt windows desktop --modules 6.2.4 win64_msvc2019_64
+      # debug_info qt3d qt5compat qtactiveqt qtcharts qtconnectivity qtdatavis3d
+      #   qtimageformats qtlottie qtmultimedia qtnetworkauth qtpositioning qtquick3d
+      #   qtquicktimeline qtremoteobjects qtscxml qtsensors qtserialbus qtserialport
+      #   qtshadertools qtvirtualkeyboard qtwebchannel qtwebengine qtwebsockets qtwebview
       - name: Setup Qt
         uses: jurplel/install-qt-action@v2
         with:
-          version: 6.3.1
-          arch: win64_msvc2019_64
-          modules: qtmultimedia
+          version: '6.2.4'
+          host: 'windows'
+          target: 'desktop'
+          arch: 'win64_msvc2019_64'
+          modules: 'qtmultimedia'
+          aqtversion: '==2.1.0'
 
       - name: Setup MSVC
         uses: ilammy/msvc-dev-cmd@v1
