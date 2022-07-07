@@ -131,7 +131,6 @@ jobs:
       - name: Configure Chiaki
         working-directory: chiaki-qt6
         run: |
-          Move-Item -Path "${{ github.workspace }}\updated_files\gui\CMakeLists.txt" -Destination ".\gui" -Force
           cmake `
           -S . `
           -B build `
