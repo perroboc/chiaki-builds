@@ -25,6 +25,7 @@ jobs:
         with:
           repository: 'alvaromunoz/chiaki-qt6'
           submodules: 'recursive'
+          path: 'chiaki-qt6'
 
       - name: Setup NASM
         run: |
