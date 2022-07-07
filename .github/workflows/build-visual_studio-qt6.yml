@@ -128,7 +128,7 @@ jobs:
           cmake --install build
 
       - name: Configure Chiaki
-        working-directory: chiaki
+        working-directory: chiaki-qt6
         run: |
           Move-Item -Path "${{ github.workspace }}\updated_files\gui\CMakeLists.txt" -Destination ".\gui" -Force
           cmake `
@@ -145,12 +145,12 @@ jobs:
           -DCMAKE_PREFIX_PATH="${{ github.workspace }}\nanopb;${{ github.workspace }}\ffmpeg;${{ github.workspace }}\opus-prefix;${{ github.workspace }}\openssl\x64;${{ github.workspace }}\SDL2;${{ env.Qt6_Dir }}"
 
       - name: Build Chiaki
-        working-directory: chiaki
+        working-directory: chiaki-qt6
         run: |
           cmake --build build --config Release --clean-first --target chiaki
 
       - name: Prepare Qt deployment package
-        working-directory: chiaki
+        working-directory: chiaki-qt6
         run: |
           mkdir Chiaki-VC-Qt6
           cp build\gui\Release\chiaki.exe Chiaki-VC-Qt6
@@ -163,7 +163,7 @@ jobs:
           windeployqt.exe --no-translations Chiaki-VC-Qt6\chiaki.exe
 
       - name: Package Chiaki
-        working-directory: chiaki
+        working-directory: chiaki-qt6
         run: |
           $CHIAKI_VERSION_MAJOR = (Select-String -Path .\CMakeLists.txt -Pattern 'set\(CHIAKI_VERSION_MAJOR ([0-9]+)\)') | %{$_.Matches.Groups[1].value}
           $CHIAKI_VERSION_MINOR = (Select-String -Path .\CMakeLists.txt -Pattern 'set\(CHIAKI_VERSION_MINOR ([0-9]+)\)') | %{$_.Matches.Groups[1].value}
