@@ -94,7 +94,7 @@ jobs:
         uses: jurplel/install-qt-action@v2
         with:
           version: 6.3.1
-          arch: win64_msvc2022_64
+          arch: win64_msvc2019_64
 
       - name: Setup MSVC
         uses: ilammy/msvc-dev-cmd@v1
