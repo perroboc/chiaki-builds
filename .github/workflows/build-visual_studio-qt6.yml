@@ -38,9 +38,9 @@ jobs:
       - name: Setup ffmpeg
         run: |
           $ProgressPreference = 'SilentlyContinue'
-          Invoke-WebRequest -UseBasicParsing -Uri "https://github.com/BtbN/FFmpeg-Builds/releases/download/autobuild-2022-03-31-12-54/ffmpeg-N-106467-ge301a24fa1-win64-gpl-shared.zip" -OutFile ".\ffmpeg-N-106467-ge301a24fa1-win64-gpl-shared.zip"
-          Expand-Archive -LiteralPath "ffmpeg-N-106467-ge301a24fa1-win64-gpl-shared.zip" -DestinationPath "."
-          Rename-Item "ffmpeg-N-106467-ge301a24fa1-win64-gpl-shared" "ffmpeg"
+          Invoke-WebRequest -UseBasicParsing -Uri "https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-n6.0-latest-win64-gpl-shared-6.0.zip" -OutFile ".\ffmpeg-n6.0-latest-win64-gpl-shared-6.0.zip"
+          Expand-Archive -LiteralPath "ffmpeg-n6.0-latest-win64-gpl-shared-6.0.zip" -DestinationPath "."
+          Rename-Item "ffmpeg-n6.0-latest-win64-gpl-shared-6.0" "ffmpeg"
           Write-Output "${{ github.workspace }}\ffmpeg\bin" | Out-File -FilePath $Env:GITHUB_PATH -Encoding utf8 -Append
 
       - name: Setup protoc
