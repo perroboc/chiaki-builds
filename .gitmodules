@@ -1,4 +1,4 @@
 [submodule "chiaki"]
 	path = chiaki
-	url = https://git.sr.ht/~thestr4ng3r/chiaki
+	url = https://github.com/8bitDream/chiaki
 	branch = master
