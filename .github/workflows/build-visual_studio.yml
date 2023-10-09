@@ -58,8 +58,8 @@ jobs:
       - name: Setup SDL2
         run: |
           $ProgressPreference = 'SilentlyContinue'
-          Invoke-WebRequest -UseBasicParsing -Uri "https://www.libsdl.org/release/SDL2-devel-2.0.22-VC.zip" -OutFile ".\SDL2-devel-2.0.22-VC.zip"
-          Expand-Archive -LiteralPath "SDL2-devel-2.0.22-VC.zip" -DestinationPath "."
+          Invoke-WebRequest -UseBasicParsing -Uri "https://www.libsdl.org/release/SDL2-devel-2.28.4-VC.zip" -OutFile ".\SDL2-devel-2.28.4-VC.zip"
+          Expand-Archive -LiteralPath "SDL2-devel-2.28.4-VC.zip" -DestinationPath "."
           Rename-Item "SDL2-2.0.22" "SDL2"
           $nix_path = "${{ github.workspace }}" -replace "\\", "/"
           Write-Output "SDL2_DIR=${{ github.workspace }}\SDL2" | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf8 -Append
