@@ -89,9 +89,10 @@ jobs:
         shell: pwsh
         run: |
           mkdir Chiaki
+          ls ${{ runner.temp }}\msys64\mingw64\bin\*.dll
           cp build\gui\chiaki.exe Chiaki
-          cp ${{ runner.temp }}\msys64\mingw64\bin\avcodec-58.dll Chiaki
-          cp ${{ runner.temp }}\msys64\mingw64\bin\avutil-56.dll Chiaki
+          cp ${{ runner.temp }}\msys64\mingw64\bin\avcodec-60.dll Chiaki
+          cp ${{ runner.temp }}\msys64\mingw64\bin\avutil-58.dll Chiaki
           cp ${{ runner.temp }}\msys64\mingw64\bin\libaom.dll Chiaki
           cp ${{ runner.temp }}\msys64\mingw64\bin\libbrotlicommon.dll Chiaki
           cp ${{ runner.temp }}\msys64\mingw64\bin\libbrotlidec.dll Chiaki
@@ -103,7 +104,7 @@ jobs:
           cp ${{ runner.temp }}\msys64\mingw64\bin\libdav1d.dll Chiaki
           cp ${{ runner.temp }}\msys64\mingw64\bin\libdouble-conversion.dll Chiaki
           cp ${{ runner.temp }}\msys64\mingw64\bin\libexpat-1.dll Chiaki
-          cp ${{ runner.temp }}\msys64\mingw64\bin\libffi-7.dll Chiaki
+          cp ${{ runner.temp }}\msys64\mingw64\bin\libffi-8.dll Chiaki
           cp ${{ runner.temp }}\msys64\mingw64\bin\libfontconfig-1.dll Chiaki
           cp ${{ runner.temp }}\msys64\mingw64\bin\libfreetype-6.dll Chiaki
           cp ${{ runner.temp }}\msys64\mingw64\bin\libfribidi-0.dll Chiaki
