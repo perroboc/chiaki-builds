@@ -1,3 +1,7 @@
+# Archive
+
+This repo has been archived, as other people are doing a far better (and consistant) job than me. Please use [chiaki4deck](https://github.com/streetpea/chiaki4deck) as a great up to date alternative. I know I will :)
+
 # (Unofficial) Chiaki builds
 
 [![Build Release](https://github.com/alvaromunoz/chiaki-builds/actions/workflows/Build-win_x64.yml/badge.svg)](https://github.com/alvaromunoz/chiaki-builds/actions/workflows/Build-win_x64.yml)
